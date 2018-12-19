@@ -19,8 +19,22 @@ import java.util.Map;
 public class ListServlet extends HttpServlet {
     private IUserService uservice = new UserServiceImpl();
     private IProductService service = new ProductServiceImpl();
+
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /*req.setCharacterEncoding("utf-8");
+        String text = req.getParameter("text");
+        if (text==""||text=="  "){
+            List<Product> lists = service.getLists();
+            req.setAttribute("lists",lists);
+            req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+        }else{
+            List<Product> lists = service.getresult(text);
+            req.setAttribute("lists",lists);
+            req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+        }*/
+
+
         Cookie[] cookies = req.getCookies();
         Map<String,Cookie> maps = CookieUntil.getCookie(cookies);
         Cookie coo = maps.get("username");
@@ -39,5 +53,19 @@ public class ListServlet extends HttpServlet {
         }
     }
 
-
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        String text = req.getParameter("text");
+        System.out.println(text);
+        if (text==""||text.equals("  ")){
+            List<Product> lists = service.getLists();
+            req.setAttribute("lists",lists);
+            req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+        }else{
+            List<Product> lists = service.getresult(text);
+            req.setAttribute("lists",lists);
+            req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+        }
+    }
 }

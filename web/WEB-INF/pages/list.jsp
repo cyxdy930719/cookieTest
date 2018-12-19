@@ -26,6 +26,10 @@
 </head>
 <body>
     欢迎${user.username}<a href="exit">退出</a><br>
+    <form method="post">
+        <input type="text" name="text">
+        <input type="submit" value="搜索">
+    </form>
     <table>
         <thead>
         <tr>
@@ -44,7 +48,7 @@
                 <td>${p.product_name}</td>
                 <td>${p.price}</td>
                 <td>${p.product_des}</td>
-                <td><img src="${p.url}" alt=""></td>
+                <td><img src="${p.url}" alt="图片" width="100",height="100"></td>
                 <td><a href="delete?product_id=${p.product_id}">删除</a> | <a href="update?product_id=${p.product_id}">修改</a></td>
             </tr>
         </c:forEach>
