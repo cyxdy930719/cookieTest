@@ -121,5 +121,28 @@ public class JdbcUntil {
         return t;
     }
 
+    public static <T> int executeCount(String sql,Object... obj){
+        int a = 0;
+        Connection conn=null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        conn=getConnection();
+        try {
+            pstmt = conn.prepareStatement(sql);
+            if (obj!=null){
+                for(int i = 0;i<obj.length;i++){
+                    pstmt.setObject(i+1,obj[i]);
+                }
+            }
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                a =rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return a;
+    }
+
 
 }

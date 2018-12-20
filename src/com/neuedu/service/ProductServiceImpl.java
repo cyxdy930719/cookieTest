@@ -4,6 +4,7 @@ package com.neuedu.service;
 import com.neuedu.dao.IProductDao;
 import com.neuedu.dao.ProductDaoImpl;
 import com.neuedu.pojo.Product;
+import com.neuedu.pojo.ResultData;
 
 import java.util.List;
 
@@ -38,5 +39,17 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> getresult(String text) {
         return dao.getresult(text);
+    }
+
+    @Override
+    public ResultData getlists(int pageNo, int pageSize) {
+        ResultData data = new ResultData(pageNo,pageSize,dao.getcount() );
+        data.setLists(dao.getlists(pageNo,pageSize));
+        return data;
+    }
+
+    @Override
+    public int getCount() {
+        return dao.getcount();
     }
 }

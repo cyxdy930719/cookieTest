@@ -1,5 +1,6 @@
 package com.neuedu.controller;
 import com.neuedu.pojo.Product;
+import com.neuedu.pojo.ResultData;
 import com.neuedu.pojo.User;
 import com.neuedu.service.IProductService;
 import com.neuedu.service.IUserService;
@@ -20,8 +21,31 @@ public class ListServlet extends HttpServlet {
     private IUserService uservice = new UserServiceImpl();
     private IProductService service = new ProductServiceImpl();
 
+    /*@Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        String text = req.getParameter("text");
+        System.out.println(text);
+        if (text==null){
+            List<Product> lists = service.getLists();
+            req.setAttribute("lists",lists);
+            req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+        }else{
+            List<Product> lists = service.getresult(text);
+            req.setAttribute("lists",lists);
+            req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+        }
+    }*/
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int pageNo = req.getParameter("pageNo")==null?1:Integer.parseInt(req.getParameter("pageNo"));
+        int pageSize = 3;
+        ResultData data = service.getlists(pageNo,pageSize);
+        data.setUrl("list");
+        req.setAttribute("data",data);
+        req.getRequestDispatcher("WEB-INF/pages/list.jsp").forward(req,resp);
+
         /*req.setCharacterEncoding("utf-8");
         String text = req.getParameter("text");
         if (text==""||text=="  "){

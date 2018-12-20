@@ -1,5 +1,6 @@
 package com.neuedu.dao;
 
+import com.neuedu.pojo.PageBean;
 import com.neuedu.pojo.Product;
 
 import com.neuedu.untiltest.JdbcUntil;
@@ -76,7 +77,7 @@ public class ProductDaoImpl implements IProductDao {
                     p.setPrice(rs.getDouble("price"));
                     p.setProduct_des(rs.getString("product_des"));
                     p.setUrl(rs.getString("url"));
-
+                    p.setProduct_id(rs.getInt("product_id"));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -84,5 +85,31 @@ public class ProductDaoImpl implements IProductDao {
             }
         }, text);
     }
+
+    @Override
+    public List<Product> getlists(int pageNo, int pageSize) {
+        return JdbcUntil.executeQuery("select * from product limit ?,?", new RowMap<Product>() {
+            @Override
+            public Product RowMapping(ResultSet rs) {
+                Product p = new Product();
+                try {
+                    p.setProduct_name(rs.getString("product_name"));
+                    p.setPrice(rs.getDouble("price"));
+                    p.setProduct_des(rs.getString("product_des"));
+                    p.setUrl(rs.getString("url"));
+                    p.setProduct_id(rs.getInt("product_id"));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return p;
+            }
+        }, pageSize*(pageNo - 1),pageSize );
+    }
+
+    @Override
+    public int getcount() {
+        return JdbcUntil.executeCount("select count(*) from product",null);
+    }
+
 
 }
